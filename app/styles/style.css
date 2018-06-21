@@ -1,0 +1,41 @@
+/* pour la connexion */
+
+/* #fixed-tab-2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75vh;
+} */
+.demo-card-square.mdl-card {
+  width: 30vw;
+  height: auto;
+}
+.mdl-card__title {
+  color: white !important;
+  background:
+    url('../assets/demos/dog.png') bottom right 15% no-repeat #46B6AC;
+  width: 100%
+}
+.mdl-layout__header-row{
+  display: flex;
+  justify-content: space-between;
+}
+#login-google{
+  color: white;
+}
+#show-dialog{
+  color: white;
+}
+
+.mdl-layout__tab-panel
+{
+
+}
+
+.page-content{
+  display: flex;
+  height: 100%;
+  width:100%;
+  justify-content: center;
+  align-items: center;
+}

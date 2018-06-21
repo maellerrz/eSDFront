@@ -1,76 +1,60 @@
-/*!
- *
- *  Web Starter Kit
- *  Copyright 2015 Google Inc. All rights reserved.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *    https://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- *
- */
-/* eslint-env browser */
-(function() {
-  'use strict';
+'use-script'; //pour lui dire de faire bien gaffe à ce que dit le code, pas d'erreur à la con
 
-  // Check to make sure service workers are supported in the current browser,
-  // and that the current page is accessed from a secure origin. Using a
-  // service worker from an insecure origin will trigger JS console errors. See
-  // http://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features
-  var isLocalhost = Boolean(window.location.hostname === 'localhost' ||
-      // [::1] is the IPv6 localhost address.
-      window.location.hostname === '[::1]' ||
-      // 127.0.0.1/8 is considered localhost for IPv4.
-      window.location.hostname.match(
-        /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
-      )
-    );
+class ESDJob {
+  constructor() {
+    this._checkSetup();
 
-  if ('serviceWorker' in navigator &&
-      (window.location.protocol === 'https:' || isLocalhost)) {
-    navigator.serviceWorker.register('service-worker.js')
-    .then(function(registration) {
-      // updatefound is fired if service-worker.js changes.
-      registration.onupdatefound = function() {
-        // updatefound is also fired the very first time the SW is installed,
-        // and there's no need to prompt for a reload at that point.
-        // So check here to see if the page is already controlled,
-        // i.e. whether there's an existing service worker.
-        if (navigator.serviceWorker.controller) {
-          // The updatefound event implies that registration.installing is set:
-          // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
-          var installingWorker = registration.installing;
-
-          installingWorker.onstatechange = function() {
-            switch (installingWorker.state) {
-              case 'installed':
-                // At this point, the old content will have been purged and the
-                // fresh content will have been added to the cache.
-                // It's the perfect time to display a "New content is
-                // available; please refresh." message in the page's interface.
-                break;
-
-              case 'redundant':
-                throw new Error('The installing ' +
-                                'service worker became redundant.');
-
-              default:
-                // Ignore
-            }
-          };
-        }
-      };
-    }).catch(function(e) {
-      console.error('Error during service worker registration:', e);
-    });
+    this.googleBtn = document.querySelector('#login-google');
+    this.snack = document.querySelector('#snackbar-alert');
+    console.log('test');
+    this._initFirebase();
+    this._setupEvents();
   }
 
-  // Your custom JavaScript goes here
-})();
+  _initFirebase(){
+    this.auth = firebase.auth(); //authentification, sais si connecté ou pas
+    this.db = firebase.firestore(); //dans quelle base de donnée on va
+    //firestore en beta, risque de bug sinon, donc ->
+    const settings = {timestampsInSnapshots: true};
+    this.db.settings(settings);
+
+    this.storage = firebase.storage();
+    //Initialize Firebase auth and listen to auth state changes
+    this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this)); //si il y a un changement d'authentification
+    var data = {
+      message: 'Server connected',
+      timeout: 5000
+    };
+    this.snack.MaterialSnackbar.showSnackbar(data);
+  }
+
+  _setupEvents(){
+    this.googleBtn.addEventListener('click', this.signInWithGoogle.bind(this));
+  }
+  signInWithGoogle(){
+    console.log('test2');
+    var provider = new firebase.auth.GoogleAuthProvider();
+    this.auth.signInWithPopup(provider);
+  }
+
+  onAuthStateChanged(user){
+    console.log('user:', JSON.stringify(user)); //pour éviter de se retrouver avec [objet Objet]
+    if (user){
+      console.log("Connecté");
+    } else {
+      console.log("Déconnecté");
+    }
+  }
+
+  _checkSetup(){
+    if (!window.firebase || !(firebase.app instanceof Function) || !firebase.app().options){
+      window.alert('You have not configured and imported the Firebase SDK' +
+        'Make sure you go through the codelan setup instructions and make' +
+        'sure you are running the codelab using `firebase serve`');
+    }
+  }
+}
+
+window.onload = function(){ //se lance quand tout les éléments du html sont chargé (tous est la)
+  window.ESDJob = new ESDJob();
+};
