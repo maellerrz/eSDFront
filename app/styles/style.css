@@ -23,13 +23,12 @@
 #login-google{
   color: white;
 }
-#show-dialog{
+#show-dialog, #logout{
   color: white;
 }
 
-.mdl-layout__tab-panel
-{
-
+main, section{
+  height: 100%;
 }
 
 .page-content{
@@ -38,4 +37,42 @@
   width:100%;
   justify-content: center;
   align-items: center;
+}
+#user-container{
+  display: flex;
+  align-items: center;
+}
+
+
+#add_button{
+  position: absolute;
+  right: 10%;
+  top: 10%;
+}
+#jobDialog{
+  width: 30%;
+}
+#user-pic{
+  display: flex;
+  height: auto;
+  margin-bottom: -20px;
+}
+#imgLog{
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+#updateInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#updateInfo div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#updateInfo input{
+  width: 40%;
+  margin-bottom: 5px;
 }

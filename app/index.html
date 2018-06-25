@@ -57,7 +57,9 @@
             <button id="login-google" class="mdl-button mdl-js-button mdl-js-ripple-effect">
                <i class="material-icons">account_circle</i>Sign-in with Google
             </button>
+            <div  id="user-pic"></div>
             <button id="show-dialog" type="button" class="mdl-button"> LOGIN</button>
+            <button id="logout" type="button" class="mdl-button" onclick="logout()"> LOGOUT</button>
           </div>
         </div>
 
@@ -74,29 +76,25 @@
         </div>
       </header>
 
-      <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">Title</span>
-      </div>
-
 <!-- Login boite de dialogue -->
-      <dialog class="mdl-dialog">
+      <dialog class="mdl-dialog" id="logDialog">
         <h2 class="mdl-card__title-text mdl-card__title ">Login</h2>
         <div class="mdl-dialog__content">
 
               <form action="#">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="sample3">
-                  <label class="mdl-textfield__label" for="sample3">Login</label>
+                  <input class="mdl-textfield__input" type="email" id="email_field">
+                  <label class="mdl-textfield__label" for="email_field">Login</label>
                 </div>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <!-- <input class="mdl-textfield__input" type="password" id="sample3">
-                  <label class="mdl-textfield__label" for="sample3">Password</label> -->
+                  <input class="mdl-textfield__input" type="password" id="password_field">
+                  <label class="mdl-textfield__label" for="password_field">Password</label>
                 </div>
               </form>
 
         </div>
         <div class="mdl-dialog__actions">
-          <button type="button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+          <button id="log" onclick="login()" type="button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
             Login
           </button>
           <button type="button" class="mdl-button close">Back</button>
@@ -112,20 +110,29 @@
 
             <div class="demo-card-square mdl-card mdl-shadow--2dp">
               <div class="mdl-card__supporting-text">
-                <form action="index.html" method="post">
-                  <input type="text" name="name" placeholder="name" value="">
-                  <input type="text" name="jobs" placeholder="jobs" value="">
-                  <input type="text" name="contact" placeholder="contact" value=""></br>
-                  <select>
-                    <option value="volvo">Volvo</option>
-                    <option value="saab">Saab</option>
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
-                  </select>
+                <form id="updateInfo" action="index.html" method="post">
+                  <div>
+                    <p id="name"></p>
+                    <input id="name_change" type="text" name="name" placeholder="edit name" value="">
+                  </div>
+                  <div>
+                    <p id="jobs"></p>
+                    <input id="jobs_change" type="text" name="jobs" placeholder="edit jobs" value="">
+                  </div>
+                  <div>
+                    <p id="contact"></p>
+                    <input id="contact_change" type="email" name="contact" placeholder="edit contact" value="">
+                  </div>
+                  <div>
+                    <p id="tjm"></p>
+                    <input id="tjm_change" type="number" placeholder="edit TJM">
+                  </div>
                 </form>
               </div>
               <div class="mdl-card__actions mdl-card--border">
-                <input class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit" name="update" value="Update">
+                <button onclick="updateUserData()" type="button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                  Update
+                </button>
               </div>
             </div>
 
@@ -146,31 +153,46 @@
                   <th>contact</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td class="mdl-data-table__cell--non-numeric">Developpeur</td>
-                  <td>Pierre</td>
-                  <td>30/04/2019</td>
-                  <td>100</td>
-                  <td>pierre@gmail.com</td>
-                </tr>
-                <tr>
-                  <td class="mdl-data-table__cell--non-numeric">Designer</td>
-                  <td>Jeanne</td>
-                  <td>12/03/2019</td>
-                  <td>45</td>
-                  <td>jeanne@gmail.com</td>
-                </tr>
-                <tr>
-                  <td class="mdl-data-table__cell--non-numeric">Community Manager</td>
-                  <td>Lola</td>
-                  <td>6/10/2019</td>
-                  <td>120</td>
-                  <td>lola@gmail.com</td>
-                </tr>
-              </tbody>
+              <tbody></tbody>
             </table>
+            <button id="add_button" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+              <i class="material-icons">add</i>
+            </button>
 
+            <dialog class="mdl-dialog" id="jobDialog">
+              <h2 class="mdl-card__title-text mdl-card__title ">Offer Job</h2>
+              <div class="mdl-dialog__content">
+
+                    <form action="#">
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="sample1">
+                        <label class="mdl-textfield__label" for="sample1">Name</label>
+                      </div>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="sample2">
+                        <label class="mdl-textfield__label" for="sample2">City</label>
+                      </div>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input id="number" type="number" placeholder="Duration">
+                      </div>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label for="date">Start : </label>
+                        <input id="date" type="date">
+                      </div>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="email" id="sample5">
+                        <label class="mdl-textfield__label" for="sample5">Contact</label>
+                      </div>
+                    </form>
+
+              </div>
+              <div class="mdl-dialog__actions">
+                <button onclick="addJobOffer()" type="button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                  <i class="material-icons">check</i>
+                </button>
+                <button type="button" class="mdl-button close">Back</button>
+              </div>
+            </dialog>
           </div>
         </section>
 
@@ -228,24 +250,41 @@
         messagingSenderId: "117655515350"
       };
       firebase.initializeApp(config);
+      var db = firebase.database();
+
     </script>
 
+    <script src="jquery-3.3.1.min.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
 
-    <!-- Built with love using Web Starter Kit -->
     <script>
-      var dialog = document.querySelector('dialog');
+
+    // pour boite de dialogue du login
+      var dialogLog = document.querySelector('#logDialog');
       var showDialogButton = document.querySelector('#show-dialog');
-      if (! dialog.showModal) {
-        dialogPolyfill.registerDialog(dialog);
+      if (! dialogLog.showModal) {
+        dialogPolyfill.registerDialog(dialogLog);
       }
       showDialogButton.addEventListener('click', function() {
-        dialog.showModal();
+        dialogLog.showModal();
       });
-      dialog.querySelector('.close').addEventListener('click', function() {
-        dialog.close();
+      dialogLog.querySelector('.close').addEventListener('click', function() {
+        dialogLog.close();
       });
+    // pour boite de dialogue de l'ajout de job
+      var dialogJob = document.querySelector('#jobDialog');
+      var jobDialog = document.querySelector('#add_button');
+      if (! dialogJob.showModal) {
+        dialogPolyfill.registerDialog(dialogJob);
+      }
+      jobDialog.addEventListener('click', function() {
+        dialogJob.showModal();
+      });
+      dialogJob.querySelector('.close').addEventListener('click', function() {
+        dialogJob.close();
+      });
+
     </script>
 
 
