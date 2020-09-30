@@ -24,8 +24,8 @@ class ESDJob {
     this.auth = firebase.auth(); //authentification, sais si connecté ou pas
     this.db = firebase.firestore(); //dans quelle base de donnée on va
     //firestore en beta, risque de bug sinon, donc ->
-    const settings = {timestampsInSnapshots: true};
-    this.db.settings(settings);
+//     const settings = {timestampsInSnapshots: true};
+//     this.db.settings(settings);
 
     this.storage = firebase.storage();
     //Initialize Firebase auth and listen to auth state changes
